@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: import.meta.env.SERVER_PORT || "http://localhost:6010", // Update with your backend URL
+  baseURL: import.meta.env.VITE_SERVER_PORT || "http://localhost:6010", // Update with your backend URL
 });
 
 // Add authorization token if needed
