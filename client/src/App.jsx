@@ -7,7 +7,7 @@ import DietCharts from './components/DietCharts';
 import Signup from './components/Auth/Register';
 import { VerifyAuth } from './components/Auth/VerifyAuth';
 import { AuthProvider } from './components/context/AuthContext';
-import { Dashboard } from './components/Dashboard';
+import { Dashboard } from './components/DashBoard.jsx';
 
 
 const App = () => {
