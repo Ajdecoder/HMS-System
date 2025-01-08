@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import Patient from "./models/Patient.js";
 import { User } from "./models/User.js";
 import bcrypt from "bcrypt";
+import DietChart from "./models/DietChart.js";
 
 // Load environment variables
 dotenv.config();
@@ -82,7 +83,7 @@ app.post("/auth/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch)
-      return res.status(404).json({ message: "Password does not match" });
+      return res.status(404).json({ message: "Password or UserName not match" });
     const payload = {
       id: user._id,
       name: user.name,

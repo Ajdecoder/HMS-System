@@ -1,70 +1,64 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
+import { createDietChart } from "../services/api";
 
 // Sample diet chart data based on the schema provided
 const dietCharts = [
   {
-    id: 1,
-    patientId: "1",
-    morning: "Oatmeal with fruits",
-    evening: "Grilled chicken with vegetables",
-    night: "Herbal tea",
-    instructions: "Eat at regular intervals and avoid processed sugars.",
+    id: "60d21b4667d0d8992e610c85", 
+    morning: "Whole grain toast with avocado and poached egg",
+    evening: "Grilled chicken breast with quinoa and steamed broccoli",
+    night: "Chamomile tea with a slice of whole grain bread",
+    instructions: "Maintain hydration and avoid high-sugar snacks.",
   },
   {
-    id: 2,
-    patientId: "2",
-    morning: "Scrambled eggs with toast",
-    evening: "Baked salmon with salad",
-    night: "Warm milk",
-    instructions: "Ensure you drink plenty of water throughout the day.",
+    id: "60d21b4667d0d8992e610c86", 
+    morning: "Smoothie with kale, banana, and almond milk",
+    evening: "Baked salmon with a side of mixed greens and cherry tomatoes",
+    night: "Warm almond milk with a pinch of cinnamon",
+    instructions: "Incorporate more leafy greens into meals.",
   },
   {
-    id: 3,
-    patientId: "3",
-    morning: "Greek yogurt with honey",
-    evening: "Steamed vegetables with rice",
-    night: "Chamomile tea",
-    instructions: "Avoid heavy meals before bedtime.",
+    id: "60d21b4667d0d8992e610c87", 
+    morning: "Greek yogurt with mixed berries and a sprinkle of flaxseeds",
+    evening: "Stir-fried tofu with bell peppers and brown rice",
+    night: "Peppermint tea with a small handful of nuts",
+    instructions: "Focus on plant-based proteins and whole grains.",
   },
   {
-    id: 4,
-    patientId: "4",
-    morning: "Smoothie with spinach and banana",
-    evening: "Quinoa with roasted vegetables",
-    night: "Peppermint tea",
-    instructions: "Follow the diet strictly for best results.",
+    id: "60d21b4667d0d8992e610c88", 
+    morning: "Oatmeal topped with sliced almonds and fresh strawberries",
+    evening: "Lentil soup with a side of whole grain bread",
+    night: "Herbal tea with a small piece of dark chocolate",
+    instructions: "Limit caffeine intake and opt for herbal teas.",
   },
 ];
 
 const DietCharts = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const modalRef = useRef(null);
 
   const handleAddChartClick = () => {
     setIsOpen(!isOpen);
   };
 
-  const [patientId, setPatientId] = useState("");
   const [morning, setMorning] = useState("");
   const [evening, setEvening] = useState("");
   const [night, setNight] = useState("");
   const [instructions, setInstructions] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const dietChartData = {
-      patientId,
       morning,
       evening,
       night,
       instructions,
     };
 
-    // Here, you can add logic to send this data to the server.
-    console.log("Diet Chart Data:", dietChartData);
+    const response = await createDietChart(dietChartData);
+    console.log(response);
   };
 
   useEffect(() => {
@@ -78,10 +72,9 @@ const DietCharts = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-6"  >
+    <div className="min-h-screen bg-gray-100 py-10 px-6">
       <h2 className="text-3xl font-semibold text-center text-blue-600 mb-8">
         Diet Charts
       </h2>
@@ -97,7 +90,7 @@ const DietCharts = () => {
             className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
           >
             <h3 className="text-2xl font-semibold text-blue-600 mb-4">
-              Diet Chart for Patient {chart.patientId}
+              Diet Chart for Patient {chart.id}
             </h3>
             <div className="space-y-4">
               <div className="flex justify-between">
@@ -122,21 +115,15 @@ const DietCharts = () => {
       </div>
 
       {isOpen && (
-        <div className="z-50 fixed top-0 left-0 w-full h-full bg-black opacity-85">
-          <div  ref={modalRef} className="z-50 max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-            <Typography variant="h4" className="text-center mb-4">
+        <div className="z-50 fixed top-0 left-0 w-full h-full bg-black opacity-70">
+          <div
+            ref={modalRef}
+            className="mt-7 z-50 max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg"
+          >
+            <Typography variant="h4" className="text-center mb-4 text-blue-600">
               Add Diet Chart
             </Typography>
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <TextField
-                  label="Patient ID"
-                  variant="outlined"
-                  fullWidth
-                  value={patientId}
-                  onChange={(e) => setPatientId(e.target.value)}
-                />
-              </div>
               <div className="mb-4">
                 <TextField
                   label="Morning"
@@ -187,11 +174,10 @@ const DietCharts = () => {
               </div>
             </form>
             {/* Close Button */}
-            <div className="text-center mt-4 ">
+            <div className="text-center mt-4">
               <Button
                 variant="outlined"
                 color="secondary"
-                className=""
                 onClick={handleAddChartClick}
               >
                 Close

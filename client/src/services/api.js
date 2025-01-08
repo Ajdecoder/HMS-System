@@ -31,6 +31,8 @@ export const createPatient = (data) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+
 export const createUser = async (data) => {
   try {
     const response = await API.post("auth/register", data, {
@@ -44,6 +46,21 @@ export const createUser = async (data) => {
     throw error;
   }
 };
+export const createDietChart = async (data) => {
+  try {
+    const response = await API.post("/diet-charts", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error adding DietChart:", error);
+    throw error;
+  }
+};
+
+
 export const loginUser = async (data) => {
   try {
     const response = await API.post("auth/login", data, {
