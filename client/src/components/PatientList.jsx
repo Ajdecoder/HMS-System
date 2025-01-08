@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPatients } from '../services/api';
+import { useAuth } from './context/AuthContext';
 
 const PatientList = () => {
   const [patients, setPatients] = useState([]);
+
+  const {loggedInUser} = useAuth()
 
   useEffect(() => {
     const getPatients = async () => {
@@ -14,7 +17,7 @@ const PatientList = () => {
       }
     };
     getPatients();
-  }, []);
+  }, [loggedInUser]);
 
   return (
     <div className="p-4">

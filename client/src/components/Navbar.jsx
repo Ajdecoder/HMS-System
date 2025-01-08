@@ -13,7 +13,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/login"); // Redirect to login after logout
+    navigate("/auth/login"); // Redirect to login after logout
   };
 
   return (
@@ -55,9 +55,15 @@ const Navbar = () => {
           onClick={toggleProfileModal}
           className="flex items-center space-x-2 text-white hover:text-blue-300 transition duration-300"
         >
-          <span className="text-white font-bold">{loggedInUser?.name || "Profile"}</span>
+          {loggedInUser ? (
+            <button className="text-white font-bold">
+              {loggedInUser?.name}
+            </button>
+          ) : (
+            <button onClick={navigate('/auth/login')} >Login</button>
+          )}
 
-          <svg
+         {loggedInUser && <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
             fill="none"
@@ -70,9 +76,9 @@ const Navbar = () => {
               strokeWidth={2}
               d="M19 9l-7 7-7-7"
             />
-          </svg>
+          </svg>}
         </button>
-        {isProfileModalOpen && (
+        {isProfileModalOpen && loggedInUser && (
           <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-48 z-10">
             <div className="px-4 py-2 text-gray-600">
               Email : {loggedInUser?.email}

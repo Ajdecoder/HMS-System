@@ -10,9 +10,9 @@ const Patients = () => {
       {/* Button to toggle form visibility */}
       <button
         onClick={() => setShowform(!showform)}
-        className="mt-4 p-2 bg-blue-600 text-white rounded hover:bg-blue-700 relative left-[90%]"
+        className="mt-4 p-2 bg-blue-600 text-white rounded hover:bg-blue-700 relative left-[90%]  "
       >
-        {showform ? "X" : "Add Patient"}
+        {showform ? <p className="p-2 hover:bg-red-700 duration-150" >X</p> : "Add Patient"}
       </button>
 
       {/* If form is shown, display the overlay with background dim */}

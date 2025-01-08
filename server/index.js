@@ -15,18 +15,18 @@ const app = express();
 const PORT = process.env.PORT || 6010;
 
 // Middleware
-app.use(cors(
-  {
-    origin: process.env.CORS_PORT || "http://localhost:5173/",
+app.use(
+  cors({
+    origin: process.env.CORS_PORT || "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-  }
-));
+  })
+);
 app.use(bodyParser.json());
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.DB_URI)
+  .connect(process.env.LOCALDB_URI || process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Database connection error:", err));
 
@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 // Authentication Middleware
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
@@ -93,13 +93,12 @@ app.post("/auth/login", async (req, res) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1h",
     }); // Generate JWT
-    
+
     res.status(200).json({ message: "Login successfull", token });
   } catch (error) {
     console.log(error.message);
   }
 });
-
 
 // API Endpoints
 
