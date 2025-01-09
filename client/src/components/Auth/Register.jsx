@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
 import { createUser } from "../../services/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -10,16 +12,25 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("food_manager");
   const [error, setError] = useState("");
+  const { setLoggedInUser } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     const data = { name, email, password, role };
-
     try {
       const response = await createUser(data);
+      const token = response.data.token;
 
       if (response.status === 200) {
         toast.success("Signup successful");
+        console.log(response);
+        localStorage.setItem("Hfmtoken", response.data.token);
+        toast.success("Login successful!");
+        const user = jwtDecode(token);
+        setLoggedInUser(user);
+        navigate("/dashboard");
       } else {
         toast.error(response.data.message || "Something went wrong");
       }
@@ -38,7 +49,7 @@ const Signup = () => {
         alt="Hospital food delivery system logo"
         className="mb-4 max-w-3xl h-screen rounded-lg ml-3"
       />
-      <div className="ml-11" >
+      <div className="ml-11">
         <h1 className=" text-center text-2xl">Signup</h1>
 
         <form
@@ -111,7 +122,7 @@ const Signup = () => {
         </Typography>
       </div>
 
-      <ToastContainer />
+      <ToastContainer autoClose="1000" />
     </div>
   );
 };

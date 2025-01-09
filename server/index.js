@@ -8,6 +8,8 @@ import Patient from "./models/Patient.js";
 import { User } from "./models/User.js";
 import bcrypt from "bcrypt";
 import DietChart from "./models/DietChart.js";
+import { authenticate } from "./middleware/auth.js";
+import { Login } from "./controllers/Auth/Login.controller.js";
 
 // Load environment variables
 dotenv.config();
@@ -35,42 +37,10 @@ app.get("/", (req, res) => {
   res.send("Hospital Food Manager API");
 });
 
-// Authentication Middleware
-const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "Unauthorized" });
 
-  try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = user;
-    next();
-  } catch (err) {
-    res.status(401).json({ message: "Invalid token" });
-  }
-};
 // Auth Register
 
-app.post("/auth/register", async (req, res) => {
-  const { name, email, password, role } = req.body;
-
-  const ExistingUser = await User.findOne({ email });
-
-  if (ExistingUser)
-    return res.status(400).json({ message: "User already exists" });
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const user = new User({ name, email, password: hashedPassword, role });
-  await user.save();
-
-  const payload = { name: user.name, email: user.email, role: user.role };
-
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" }); // Generate JWT
-
-  res
-    .status(200)
-    .json({ message: "User has been registered successfully", token });
-});
+app.post("/auth/register", Login)
 
 // Auth Login
 app.post("/auth/login", async (req, res) => {
