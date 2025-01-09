@@ -20,17 +20,21 @@ export const AuthProvider = ({ children }) => {
           localStorage.removeItem("Hfmtoken"); // Remove invalid token
         }
       }
-      setLoading(false);
+      setLoading(false); // Set loading to false once the check is complete
     };
-  
+
     checkToken();
   }, []);
-  
 
   const logout = () => {
     setLoggedInUser(null);
     localStorage.removeItem("Hfmtoken");
   };
+
+  if (loading) {
+    // Optionally, you can render a loading spinner or a loading message here
+    return <div>Loading...</div>;
+  }
 
   return (
     <AuthContext.Provider value={{ loggedInUser, setLoggedInUser, logout }}>

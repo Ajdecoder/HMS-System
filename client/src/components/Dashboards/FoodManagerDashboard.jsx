@@ -1,8 +1,12 @@
 import React from "react";
 import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const FoodManagerDashboard = () => {
+
+  const navigate = useNavigate()
+
   return (
     <motion.div
       className="p-6 bg-gray-50 min-h-screen"
@@ -90,6 +94,7 @@ const FoodManagerDashboard = () => {
           >
             <div className="flex justify-center">
               <Button
+              onClick={() => navigate('/diet-charts')}
                 variant="contained"
                 color="primary"
                 className="py-3 text-lg font-semibold hover:bg-red-700 transition-colors bg-gradient-to-r from-sky-600 to-orange-600"

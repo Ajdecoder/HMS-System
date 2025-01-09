@@ -62,6 +62,8 @@ export const createDietChart = async (data) => {
 
 
 export const loginUser = async (data) => {
+  
+  
   try {
     const response = await API.post("auth/login", data, {
       headers: {

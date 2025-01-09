@@ -1,56 +1,55 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TextField, Button, Typography, Card, CardContent, Box } from "@mui/material";
+import { TextField, Button, Typography, CardContent, Box, CircularProgress } from "@mui/material";
 import { createDietChart, GetAllCharts } from "../services/api";
-
-// Sample diet chart data based on the schema provided
-const dietCharts = [
-  {
-    id: "60d21b4667d0d8992e610c85",
-    morning: "Whole grain toast with avocado and poached egg",
-    evening: "Grilled chicken breast with quinoa and steamed broccoli",
-    night: "Chamomile tea with a slice of whole grain bread",
-    instructions: "Maintain hydration and avoid high-sugar snacks.",
-  },
-  {
-    id: "60d21b4667d0d8992e610c86",
-    morning: "Smoothie with kale, banana, and almond milk",
-    evening: "Baked salmon with a side of mixed greens and cherry tomatoes",
-    night: "Warm almond milk with a pinch of cinnamon",
-    instructions: "Incorporate more leafy greens into meals.",
-  },
-
-];
+import { motion } from "framer-motion";
 
 const DietCharts = () => {
-  const [dietChartsData, setDietChartsData] = useState(dietCharts);
+  const [dietChartsData, setDietChartsData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useRef(null);
-
-  const handleAddChartClick = () => {
-    setIsOpen(!isOpen);
-  };
-
   const [morning, setMorning] = useState("");
   const [evening, setEvening] = useState("");
   const [night, setNight] = useState("");
   const [instructions, setInstructions] = useState("");
+  const [loading, setLoading] = useState(true); 
+  const modalRef = useRef(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const dietChartData = {
-      morning,
-      evening,
-      night,
-      instructions,
+  
+  useEffect(() => {
+    const fetchDietCharts = async () => {
+      try {
+        const res = await GetAllCharts();
+        setDietChartsData(res.data);
+      } catch (error) {
+        console.error("Error fetching diet charts:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const response = await createDietChart(dietChartData);
-    console.log(response);
+    fetchDietCharts();
+  }, []);
+
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const dietChartData = { morning, evening, night, instructions };
+
+    try {
+      const response = await createDietChart(dietChartData);
+      console.log("Diet chart created:", response);
+      setDietChartsData([response.data, ...dietChartsData]); 
+      setMorning("");
+      setEvening("");
+      setNight("");
+      setInstructions("");
+      setIsOpen(false); 
+    } catch (error) {
+      console.error("Error creating diet chart:", error);
+    }
   };
 
+  
   useEffect(() => {
-    // Close the modal if clicked outside
     const handleClickOutside = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
         setIsOpen(false);
@@ -59,22 +58,6 @@ const DietCharts = () => {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-
-  useEffect(() => {
-    // Fetch diet chart data from the API
-    const fetchDietCharts = async () => {
-      try {
-        const res = await GetAllCharts();
-        console.log("Fetched Diet Charts:", res.data);
-        setDietChartsData((prevData) => [...prevData, ...res.data]);
-      } catch (error) {
-        console.error("Error fetching diet charts:", error);
-      }
-    };
-  
-    fetchDietCharts();
   }, []);
 
   return (
@@ -87,70 +70,72 @@ const DietCharts = () => {
         goals and conditions.
       </p>
 
+      {/* Loading Spinner */}
+      {loading ? (
+        <div className="text-center">
+          <CircularProgress color="primary" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {dietChartsData.map((chart) => (
+            <motion.div
+              key={chart.id}
+              className="bg-white shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105"
+            >
+              <CardContent className="p-6">
+                <Box className="space-y-4">
+                  <Typography variant="h6" className="text-sky-600 font-semibold mb-4">
+                    Patient: {chart.id || chart._id}
+                  </Typography>
 
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  {dietChartsData.map((chart) => (
-    <Card
-      key={chart.id}
-      className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300"
-      sx={{ borderRadius: 2 }}
-    >
-      <CardContent className="p-6">
-        <Box className="space-y-4">
-          <Typography
-            variant="h6"
-            className="text-sky-600 font-semibold mb-4"
-            gutterBottom
-          >
-            Patient: {chart.id||chart._id}
-          </Typography>
+                  <div className="flex justify-between">
+                    <Typography variant="body1" className="font-medium text-gray-700">
+                      Morning:
+                    </Typography>
+                    <Typography variant="body2" className="text-gray-500">
+                      {chart.morning}
+                    </Typography>
+                  </div>
 
-          <div className="flex justify-between">
-            <Typography variant="body1" className="font-medium text-gray-700">
-              Morning:
-            </Typography>
-            <Typography variant="body2" className="text-gray-500">
-              {chart.morning}
-            </Typography>
-          </div>
+                  <div className="flex justify-between">
+                    <Typography variant="body1" className="font-medium text-gray-700">
+                      Evening:
+                    </Typography>
+                    <Typography variant="body2" className="text-gray-500">
+                      {chart.evening}
+                    </Typography>
+                  </div>
 
-          <div className="flex justify-between">
-            <Typography variant="body1" className="font-medium text-gray-700">
-              Evening:
-            </Typography>
-            <Typography variant="body2" className="text-gray-500">
-              {chart.evening}
-            </Typography>
-          </div>
+                  <div className="flex justify-between">
+                    <Typography variant="body1" className="font-medium text-gray-700">
+                      Night:
+                    </Typography>
+                    <Typography variant="body2" className="text-gray-500">
+                      {chart.night}
+                    </Typography>
+                  </div>
 
-          <div className="flex justify-between">
-            <Typography variant="body1" className="font-medium text-gray-700">
-              Night:
-            </Typography>
-            <Typography variant="body2" className="text-gray-500">
-              {chart.night}
-            </Typography>
-          </div>
+                  <div className="flex justify-between">
+                    <Typography variant="body1" className="font-medium text-gray-700">
+                      Instructions:
+                    </Typography>
+                    <Typography variant="body2" className="text-gray-500">
+                      {chart.instructions}
+                    </Typography>
+                  </div>
+                </Box>
+              </CardContent>
+            </motion.div>
+          ))}
+        </div>
+      )}
 
-          <div className="flex justify-between">
-            <Typography variant="body1" className="font-medium text-gray-700">
-              Instructions:
-            </Typography>
-            <Typography variant="body2" className="text-gray-500">
-              {chart.instructions}
-            </Typography>
-          </div>
-        </Box>
-      </CardContent>
-    </Card>
-  ))}
-</div>
-
+      {/* Modal to Add Diet Chart */}
       {isOpen && (
         <div className="z-50 fixed top-0 left-0 w-full h-full bg-black opacity-90">
           <div
             ref={modalRef}
-            className="mt-7 z-50 max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg "
+            className="mt-7 z-50 max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg"
           >
             <Typography variant="h4" className="text-center mb-4 text-sky-600">
               Add Diet Chart
@@ -205,12 +190,11 @@ const DietCharts = () => {
                 </Button>
               </div>
             </form>
-            {/* Close Button */}
             <div className="text-center mt-4">
               <Button
                 variant="outlined"
                 color="secondary"
-                onClick={handleAddChartClick}
+                onClick={() => setIsOpen(false)} 
               >
                 Close
               </Button>
@@ -219,10 +203,11 @@ const DietCharts = () => {
         </div>
       )}
 
+      {/* Add New Diet Chart Button */}
       <div className="mt-12 text-center">
         {!isOpen && (
           <button
-            onClick={handleAddChartClick}
+            onClick={() => setIsOpen(true)}
             className="bg-sky-600 bg-gradient-to-t from-indigo-700 to-cyan-400 text-white py-3 px-6 rounded-full hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
           >
             Add New Diet Chart

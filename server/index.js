@@ -92,7 +92,7 @@ app.post("/auth/login", async (req, res) => {
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: Date.now() + 3600 * 24 * 1000,
     }); // Generate JWT
 
     res.status(200).json({ message: "Login successfull", token });
