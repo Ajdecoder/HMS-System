@@ -18,20 +18,7 @@ const dietCharts = [
     night: "Warm almond milk with a pinch of cinnamon",
     instructions: "Incorporate more leafy greens into meals.",
   },
-  {
-    id: "60d21b4667d0d8992e610c87",
-    morning: "Greek yogurt with mixed berries and a sprinkle of flaxseeds",
-    evening: "Stir-fried tofu with bell peppers and brown rice",
-    night: "Peppermint tea with a small handful of nuts",
-    instructions: "Focus on plant-based proteins and whole grains.",
-  },
-  {
-    id: "60d21b4667d0d8992e610c88",
-    morning: "Oatmeal topped with sliced almonds and fresh strawberries",
-    evening: "Lentil soup with a side of whole grain bread",
-    night: "Herbal tea with a small piece of dark chocolate",
-    instructions: "Limit caffeine intake and opt for herbal teas.",
-  },
+
 ];
 
 const DietCharts = () => {
@@ -91,11 +78,11 @@ const DietCharts = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-6">
-      <h2 className="text-3xl font-semibold text-center text-blue-600 mb-8">
+    <div className="min-h-screen bg-gray-950 py-10 px-6">
+      <h2 className="text-3xl font-semibold text-center text-sky-600 mb-8">
         Diet Charts
       </h2>
-      <p className="text-lg text-center text-gray-700 mb-6">
+      <p className="text-lg text-center text-sky-600 mb-6">
         Browse through various diet charts designed to meet specific health
         goals and conditions.
       </p>
@@ -112,7 +99,7 @@ const DietCharts = () => {
         <Box className="space-y-4">
           <Typography
             variant="h6"
-            className="text-blue-600 font-semibold mb-4"
+            className="text-sky-600 font-semibold mb-4"
             gutterBottom
           >
             Patient: {chart.id||chart._id}
@@ -160,12 +147,12 @@ const DietCharts = () => {
 </div>
 
       {isOpen && (
-        <div className="z-50 fixed top-0 left-0 w-full h-full bg-black opacity-70">
+        <div className="z-50 fixed top-0 left-0 w-full h-full bg-black opacity-90">
           <div
             ref={modalRef}
-            className="mt-7 z-50 max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg"
+            className="mt-7 z-50 max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg "
           >
-            <Typography variant="h4" className="text-center mb-4 text-blue-600">
+            <Typography variant="h4" className="text-center mb-4 text-sky-600">
               Add Diet Chart
             </Typography>
             <form onSubmit={handleSubmit}>
@@ -236,7 +223,7 @@ const DietCharts = () => {
         {!isOpen && (
           <button
             onClick={handleAddChartClick}
-            className="bg-blue-600 bg-gradient-to-t from-indigo-700 to-cyan-400 text-white py-3 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-sky-600 bg-gradient-to-t from-indigo-700 to-cyan-400 text-white py-3 px-6 rounded-full hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
           >
             Add New Diet Chart
           </button>

@@ -12,12 +12,12 @@ const Patients = () => {
         onClick={() => setShowform(!showform)}
         className="mt-4 p-2 bg-blue-600 text-white rounded hover:bg-blue-700 relative left-[90%]  "
       >
-        {showform ? <p className="p-2 hover:bg-red-700 duration-150" >X</p> : "Add Patient"}
+        {showform ? <p className="p-2 hover:bg-red-700 duration-150" >X</p > : <p className="" >Add Patient</p> }
       </button>
 
       {/* If form is shown, display the overlay with background dim */}
       {showform && (
-        <div className="z-50  top-0 left-0  bg-black opacity-85">
+        <div className= " mb-4 bg-black opacity-85">
           <PatientForm showform={showform} />
         </div>
       )}
