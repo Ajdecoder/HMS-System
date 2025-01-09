@@ -15,6 +15,7 @@ const Navbar = () => {
     logout();
     navigate("/auth/login"); // Redirect to login after logout
   };
+  
 
   return (
     <nav className="bg-blue-600 p-4 flex justify-between items-center relative">
@@ -60,7 +61,7 @@ const Navbar = () => {
               {loggedInUser?.name}
             </button>
           ) : (
-            <button onClick={navigate('/auth/login')} >Login</button>
+            <button onClick={()=>navigate('/auth/login')} >Login</button>
           )}
 
          {loggedInUser && <svg
@@ -93,7 +94,7 @@ const Navbar = () => {
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
                   navigate("/dashboard");
-                  setProfileModalOpen(false);
+                  toggleProfileModal
                 }}
               >
                 Dashboard
@@ -102,7 +103,7 @@ const Navbar = () => {
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
                   navigate("/settings");
-                  setProfileModalOpen(false);
+                  toggleProfileModal
                 }}
               >
                 Settings

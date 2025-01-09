@@ -9,17 +9,23 @@ export const AuthProvider = ({ children }) => {
 
   // Handle user from JWT token
   useEffect(() => {
-    const token = localStorage.getItem("Hfmtoken");
-    if (token) {
-      try {
-        const decodedUser = Decodejwt(token);
-        setLoggedInUser(decodedUser);
-      } catch (error) {
-        console.error("Error decoding token:", error);
+    const checkToken = () => {
+      const token = localStorage.getItem("Hfmtoken");
+      if (token) {
+        try {
+          const decodedUser = Decodejwt(token);
+          setLoggedInUser(decodedUser);
+        } catch (error) {
+          console.error("Error decoding token:", error);
+          localStorage.removeItem("Hfmtoken"); // Remove invalid token
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+  
+    checkToken();
   }, []);
+  
 
   const logout = () => {
     setLoggedInUser(null);

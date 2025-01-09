@@ -74,3 +74,17 @@ export const loginUser = async (data) => {
     throw error;
   }
 };
+
+export const GetAllCharts = async () => {
+  try {
+    const response = await API.get("/diet-charts", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error fetching diet charts:", error);
+    throw error;
+  }
+}

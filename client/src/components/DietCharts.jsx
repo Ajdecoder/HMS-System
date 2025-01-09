@@ -1,32 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TextField, Button, Typography } from "@mui/material";
-import { createDietChart } from "../services/api";
+import { TextField, Button, Typography, Card, CardContent, Box } from "@mui/material";
+import { createDietChart, GetAllCharts } from "../services/api";
 
 // Sample diet chart data based on the schema provided
 const dietCharts = [
   {
-    id: "60d21b4667d0d8992e610c85", 
+    id: "60d21b4667d0d8992e610c85",
     morning: "Whole grain toast with avocado and poached egg",
     evening: "Grilled chicken breast with quinoa and steamed broccoli",
     night: "Chamomile tea with a slice of whole grain bread",
     instructions: "Maintain hydration and avoid high-sugar snacks.",
   },
   {
-    id: "60d21b4667d0d8992e610c86", 
+    id: "60d21b4667d0d8992e610c86",
     morning: "Smoothie with kale, banana, and almond milk",
     evening: "Baked salmon with a side of mixed greens and cherry tomatoes",
     night: "Warm almond milk with a pinch of cinnamon",
     instructions: "Incorporate more leafy greens into meals.",
   },
   {
-    id: "60d21b4667d0d8992e610c87", 
+    id: "60d21b4667d0d8992e610c87",
     morning: "Greek yogurt with mixed berries and a sprinkle of flaxseeds",
     evening: "Stir-fried tofu with bell peppers and brown rice",
     night: "Peppermint tea with a small handful of nuts",
     instructions: "Focus on plant-based proteins and whole grains.",
   },
   {
-    id: "60d21b4667d0d8992e610c88", 
+    id: "60d21b4667d0d8992e610c88",
     morning: "Oatmeal topped with sliced almonds and fresh strawberries",
     evening: "Lentil soup with a side of whole grain bread",
     night: "Herbal tea with a small piece of dark chocolate",
@@ -35,6 +35,7 @@ const dietCharts = [
 ];
 
 const DietCharts = () => {
+  const [dietChartsData, setDietChartsData] = useState(dietCharts);
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef(null);
 
@@ -73,6 +74,22 @@ const DietCharts = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
+  useEffect(() => {
+    // Fetch diet chart data from the API
+    const fetchDietCharts = async () => {
+      try {
+        const res = await GetAllCharts();
+        console.log("Fetched Diet Charts:", res.data);
+        setDietChartsData((prevData) => [...prevData, ...res.data]);
+      } catch (error) {
+        console.error("Error fetching diet charts:", error);
+      }
+    };
+  
+    fetchDietCharts();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-6">
       <h2 className="text-3xl font-semibold text-center text-blue-600 mb-8">
@@ -83,36 +100,64 @@ const DietCharts = () => {
         goals and conditions.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {dietCharts.map((chart) => (
-          <div
-            key={chart.id}
-            className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {dietChartsData.map((chart) => (
+    <Card
+      key={chart.id}
+      className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300"
+      sx={{ borderRadius: 2 }}
+    >
+      <CardContent className="p-6">
+        <Box className="space-y-4">
+          <Typography
+            variant="h6"
+            className="text-blue-600 font-semibold mb-4"
+            gutterBottom
           >
-            <h3 className="text-2xl font-semibold text-blue-600 mb-4">
-              Diet Chart for Patient {chart.id}
-            </h3>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <strong>Morning:</strong>
-                <span>{chart.morning}</span>
-              </div>
-              <div className="flex justify-between">
-                <strong>Evening:</strong>
-                <span>{chart.evening}</span>
-              </div>
-              <div className="flex justify-between">
-                <strong>Night:</strong>
-                <span>{chart.night}</span>
-              </div>
-              <div className="flex justify-between">
-                <strong>Instructions:</strong>
-                <span>{chart.instructions}</span>
-              </div>
-            </div>
+            Patient: {chart.id||chart._id}
+          </Typography>
+
+          <div className="flex justify-between">
+            <Typography variant="body1" className="font-medium text-gray-700">
+              Morning:
+            </Typography>
+            <Typography variant="body2" className="text-gray-500">
+              {chart.morning}
+            </Typography>
           </div>
-        ))}
-      </div>
+
+          <div className="flex justify-between">
+            <Typography variant="body1" className="font-medium text-gray-700">
+              Evening:
+            </Typography>
+            <Typography variant="body2" className="text-gray-500">
+              {chart.evening}
+            </Typography>
+          </div>
+
+          <div className="flex justify-between">
+            <Typography variant="body1" className="font-medium text-gray-700">
+              Night:
+            </Typography>
+            <Typography variant="body2" className="text-gray-500">
+              {chart.night}
+            </Typography>
+          </div>
+
+          <div className="flex justify-between">
+            <Typography variant="body1" className="font-medium text-gray-700">
+              Instructions:
+            </Typography>
+            <Typography variant="body2" className="text-gray-500">
+              {chart.instructions}
+            </Typography>
+          </div>
+        </Box>
+      </CardContent>
+    </Card>
+  ))}
+</div>
 
       {isOpen && (
         <div className="z-50 fixed top-0 left-0 w-full h-full bg-black opacity-70">

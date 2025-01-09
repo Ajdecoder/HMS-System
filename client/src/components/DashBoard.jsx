@@ -11,7 +11,7 @@ export const Dashboard = () => {
 
   switch (userRole) {
     case "food_manager":
-      return <FoodManagerDashboard />;
+      return <FoodManagerDashboard />;  
     case "pantry_staff":
       return <PantryStaffDashboard />;
     case "delivery_personnel":

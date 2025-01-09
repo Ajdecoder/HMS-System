@@ -13,7 +13,7 @@ export const VerifyAuth = () => {
     } else {
       seAuthenticated(false);
     }
-  },[authenticated]);
+  },[]);
 
   return <div>{authenticated ? <Home /> : <Login />}</div>;
 };

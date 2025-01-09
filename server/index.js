@@ -83,7 +83,7 @@ app.post("/auth/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch)
-      return res.status(404).json({ message: "Password or UserName not match" });
+      return res.status(404).json({ message: "Invalid Credentials " });
     const payload = {
       id: user._id,
       name: user.name,
