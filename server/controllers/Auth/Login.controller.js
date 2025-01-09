@@ -2,6 +2,10 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose';
+import { User } from '../../models/User.js';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const Login = async (req, res) => {
   try {
@@ -22,11 +26,11 @@ export const Login = async (req, res) => {
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: Date.now() + 3600 * 24 * 1000,
+      expiresIn: '1d',
     }); // Generate JWT
 
     res.status(200).json({ message: "Login successfull", token });
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({ error: error.message });
   }
 }

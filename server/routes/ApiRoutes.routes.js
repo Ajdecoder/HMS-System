@@ -4,38 +4,53 @@ import {
   getPatientById,
   updatePatientById,
   deletePatientById,
+  getAllPatient,
+} from "../controllers/Patient.controller.js";
+import {
   createDietChart,
+  deleteDietChartById,
+  getAllDietChart,
   getDietChartByPatientId,
   updateDietChartById,
-  deleteDietChartById,
+} from "../controllers/DietChart.controller.js";
+import {
   addPantryStaff,
+  deletePantryStaffById,
+  getAllPantryStaff,
   getPantryStaffById,
   updatePantryStaffById,
-  deletePantryStaffById,
+} from "../controllers/Pantry.controller.js";
+import {
   assignMealDelivery,
+  getAllMealDelivery,
   getMealDeliveryById,
   updateMealDeliveryById,
-} from "./controllers";
+} from "../controllers/MealDelivery.controller.js";
+import { authenticate } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/patients", createPatient);
-router.get("/patients/:id", getPatientById);
-router.put("/patients/:id", updatePatientById);
-router.delete("/patients/:id", deletePatientById);
+router.post("/patients", authenticate, createPatient);
+router.get("/patients", authenticate, getAllPatient);
+router.get("/patients/:id", authenticate, getPatientById);
+router.put("/patients/:id", authenticate, updatePatientById);
+router.delete("/patients/:id", authenticate, deletePatientById);
 
-router.post("/diet-charts", createDietChart);
-router.get("/diet-charts/:patientId", getDietChartByPatientId);
-router.put("/diet-charts/:id", updateDietChartById);
-router.delete("/diet-charts/:id", deleteDietChartById);
+router.post("/diet-charts", authenticate, createDietChart);
+router.get("/diet-charts", authenticate, getAllDietChart);
+router.get("/diet-charts/:patientId", authenticate, getDietChartByPatientId);
+router.put("/diet-charts/:id", authenticate, updateDietChartById);
+router.delete("/diet-charts/:id", authenticate, deleteDietChartById);
 
-router.post("/pantry", addPantryStaff);
-router.get("/pantry/:id", getPantryStaffById);
-router.put("/pantry/:id", updatePantryStaffById);
-router.delete("/pantry/:id", deletePantryStaffById);
+router.post("/pantry", authenticate, addPantryStaff);
+router.get("/pantry", authenticate, getAllPantryStaff);
+router.get("/pantry/:id", authenticate, getPantryStaffById);
+router.put("/pantry/:id", authenticate, updatePantryStaffById);
+router.delete("/pantry/:id", authenticate, deletePantryStaffById);
 
-router.post("/meal-deliveries", assignMealDelivery);
-router.get("/meal-deliveries/:id", getMealDeliveryById);
-router.put("/meal-deliveries/:id", updateMealDeliveryById);
+router.post("/meal-deliveries", authenticate, assignMealDelivery);
+router.get("/meal-deliveries", authenticate, getAllMealDelivery);
+router.get("/meal-deliveries/:id", authenticate, getMealDeliveryById);
+router.put("/meal-deliveries/:id", authenticate, updateMealDeliveryById);
 
 export default router;

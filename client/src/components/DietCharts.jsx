@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TextField, Button, Typography, CardContent, Box, CircularProgress } from "@mui/material";
-import { createDietChart, GetAllCharts } from "../services/api";
+import { createDietChart, fetchDietCharts } from "../services/api";
 import { motion } from "framer-motion";
 
 const DietCharts = () => {
@@ -15,9 +15,9 @@ const DietCharts = () => {
 
   
   useEffect(() => {
-    const fetchDietCharts = async () => {
+    const getallDietCharts = async () => {
       try {
-        const res = await GetAllCharts();
+        const res = await fetchDietCharts();
         setDietChartsData(res.data);
       } catch (error) {
         console.error("Error fetching diet charts:", error);
@@ -26,7 +26,7 @@ const DietCharts = () => {
       }
     };
 
-    fetchDietCharts();
+    getallDietCharts();
   }, []);
 
   

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
-import { createUser } from "../../services/api";
+import { registerUser } from "../../services/api";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
@@ -20,7 +20,7 @@ const Signup = () => {
     e.preventDefault();
     const data = { name, email, password, role };
     try {
-      const response = await createUser(data);
+      const response = await registerUser(data);
       const token = response.data.token;
 
       if (response.status === 200) {

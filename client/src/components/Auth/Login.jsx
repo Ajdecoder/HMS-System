@@ -8,9 +8,9 @@ import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const {setLoggedInUser} = useAuth()
+  const { setLoggedInUser } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,12 +20,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await loginUser(formData);
+      console.log("response", response);
       const { token } = response.data;
-      const user = jwtDecode(token)
+      const user = jwtDecode(token);
       setLoggedInUser(user);
       localStorage.setItem("Hfmtoken", token);
       toast.success("Login successful!");
-      
+
       navigate("/dashboard");
     } catch (err) {
       console.error("Error logging in:", err);
@@ -43,8 +44,8 @@ const Login = () => {
         backgroundRepeat: "no-repeat",
         height: "100vh",
         width: "100%",
-        opacity: 0.7, 
-        position: "relative", 
+        opacity: 0.7,
+        position: "relative",
       }}
     >
       <div
@@ -59,10 +60,9 @@ const Login = () => {
           onSubmit={handleSubmit}
           className="bg-white p-8 rounded-lg shadow-lg w-96"
           style={{
-            zIndex: 1, 
+            zIndex: 1,
           }}
         >
-         
           <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
 
           <Input
@@ -100,7 +100,7 @@ const Login = () => {
             </Link>{" "}
           </p>
         </form>
-        <ToastContainer autoClose='1000' />
+        <ToastContainer autoClose="1000" />
       </div>
     </div>
   );

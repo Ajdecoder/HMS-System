@@ -1,4 +1,4 @@
-import PantryStaff from './models/PantryStaff';
+import PantryStaff from "../models/PantryStaff.js";
 
 // PantryStaff Management
 export const addPantryStaff = async (req, res) => {
@@ -36,6 +36,15 @@ export const deletePantryStaffById = async (req, res) => {
     const deletedPantryStaff = await PantryStaff.findByIdAndDelete(req.params.id);
     if (!deletedPantryStaff) return res.status(404).json({ message: "Pantry staff not found" });
     res.json({ message: "Pantry staff deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getAllPantryStaff = async (res) => {
+  try {
+    const patients = await Patient.find();
+    res.json(patients);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -1,204 +1,77 @@
 import axios from "axios";
 
+// Configure Axios
 const API = axios.create({
   baseURL: import.meta.env.VITE_SERVER_PORT || "http://localhost:6010", // Update with your backend URL
 });
 
-// Add authorization token if needed
+// Add Authorization token
 API.interceptors.request.use((req) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("Hfmtoken");
+  console.log(token)
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
   }
   return req;
 });
 
-const token = localStorage.getItem("Hfmtoken");
+// Patients
+export const fetchPatients = async () => API.get("/patients");
 
-// API Endpoints
-export const fetchPatients = async () => {
-  const response = await API.get("/patients", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  console.log(response);
-  return response;
-};
+export const fetchPatientById = async (id) => API.get(`/patients/${id}`);
 
-  export const createPatient = async (data) => {
-    try {
-      const response = await API.post("/patients", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response;
-    } catch (error) {
-      console.error("Error creating patient:", error.response?.data || error.message);
-      throw error;
-    }
-  };
+export const createPatient = async (data) => API.post("/patients", data);
+
+export const updatePatientById = async (id, data) =>
   
-
-export const createDietChart = async (data) => {
-  try {
-    const response = await API.post("/diet-charts", data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error("Error adding DietChart:", error);
-    throw error;
-  }
-};
-
-export const loginUser = async (data) => {
-  try {
-    const response = await API.post("auth/login", data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error("Error during login:", error);
-    throw error;
-  }
-};
-
-export const GetAllCharts = async () => {
-  try {
-    const response = await API.get("/diet-charts", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error("Error fetching diet charts:", error);
-    throw error;
-  }
-};
-// export const GetAllCharts = async () => {
-//   try {
-//     const response = await API.get("/diet-charts", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching diet charts:", error);
-//     throw error;
-//   }
-// }
+  API.put(`/patients/${id}`, data);
+export const deletePatientById = async (id) => API.delete(`/patients/${id}`);
 
 
-// export const GetAllCharts = async () => {
-//   try {
-//     const response = await API.get("/diet-charts", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching diet charts:", error);
-//     throw error;
-//   }
-// }
+// Diet Charts
+export const fetchDietCharts = async () => API.get("/api/v1/diet-charts");
 
+export const fetchDietChartByPatientId = async (patientId) =>
+  
+  API.get(`/diet-charts/${patientId}`);
+export const createDietChart = async (data) => API.post("/diet-charts", data);
 
-// export const GetAllCharts = async () => {
-//   try {
-//     const response = await API.get("/diet-charts", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching diet charts:", error);
-//     throw error;
-//   }
-// }
+export const updateDietChartById = async (id, data) =>
+  
+  API.put(`/diet-charts/${id}`, data);
+export const deleteDietChartById = async (id) =>
+  
+  API.delete(`/diet-charts/${id}`);
 
+// Pantry Staff
+export const fetchPantryStaff = async () => API.get("/pantry");
 
-// export const GetAllCharts = async () => {
-//   try {
-//     const response = await API.get("/diet-charts", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching diet charts:", error);
-//     throw error;
-//   }
-// }
+export const fetchPantryStaffById = async (id) => API.get(`/pantry/${id}`);
 
+export const addPantryStaff = async (data) => API.post("/pantry", data);
 
-// export const GetAllCharts = async () => {
-//   try {
-//     const response = await API.get("/diet-charts", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching diet charts:", error);
-//     throw error;
-//   }
-// }
+export const updatePantryStaffById = async (id, data) =>
+  
+  API.put(`/pantry/${id}`, data);
+export const deletePantryStaffById = async (id) =>
+  
+  API.delete(`/pantry/${id}`);
 
+// Meal Deliveries
+export const fetchMealDeliveries = async () => API.get("/meal-deliveries");
 
-// export const GetAllCharts = async () => {
-//   try {
-//     const response = await API.get("/diet-charts", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching diet charts:", error);
-//     throw error;
-//   }
-// }
+export const fetchMealDeliveryById = async (id) =>
+  
+  API.get(`/meal-deliveries/${id}`);
+export const assignMealDelivery = async (data) =>
+  
+  API.post("/meal-deliveries", data);
+export const updateMealDeliveryById = async (id, data) =>
+  
+  API.put(`/meal-deliveries/${id}`, data);
 
+// User Authentication
+export const loginUser = async (data) => API.post("auth/login", data);
 
-// export const GetAllCharts = async () => {
-//   try {
-//     const response = await API.get("/diet-charts", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching diet charts:", error);
-//     throw error;
-//   }
-// }
-
-
-// export const GetAllCharts = async () => {
-//   try {
-//     const response = await API.get("/diet-charts", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching diet charts:", error);
-//     throw error;
-//   }
-// }
-
+export const registerUser = async (data) => API.post("auth/register", data);
 
