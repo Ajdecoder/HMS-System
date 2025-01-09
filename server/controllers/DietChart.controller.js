@@ -1,4 +1,5 @@
 import DietChart from "../models/DietChart.js";
+import Patient from "../models/Patient.js";
 
 // DietChart Management
 export const createDietChart = async (req, res) => {
@@ -50,11 +51,13 @@ export const deleteDietChartById = async (req, res) => {
   }
 };
 
-export const getAllDietChart = async (res) => {
+export const getAllDietChart = async (req, res) => {
   try {
-    const patients = await Patient.find();
-    res.json(patients);
+    const dietCharts = await DietChart.find().populate('patientId');
+    res.status(200).json(dietCharts);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error fetching diet charts:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
   }
 };
+

@@ -80,7 +80,7 @@ const Navbar = () => {
           </svg>}
         </button>
         {isProfileModalOpen && loggedInUser && (
-          <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-48 z-10">
+          <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-58 z-10">
             <div className="px-4 py-2 text-gray-600">
               Email : {loggedInUser?.email}
             </div>

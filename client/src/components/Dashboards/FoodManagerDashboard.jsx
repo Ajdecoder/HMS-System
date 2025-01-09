@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { fetchDietCharts, fetchMealDeliveries } from "../../services/api";
 
 const FoodManagerDashboard = () => {
+  const navigate = useNavigate();
+  const [dietcharts, setDietCharts] = useState([]);
+  const [mealDeliveries, setMealDeliveries] = useState([]);
 
-  const navigate = useNavigate()
+  useEffect(() => {
+    const getFoodManagerData = async () => {
+      try {
+        const res2 = await fetchDietCharts();
+        const res = await fetchMealDeliveries();
+        console.log(res)
+        setMealDeliveries(res.data);
+        setDietCharts(res2.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getFoodManagerData();
+  }, []);
+
+  // Calculate patients with special instructions (assuming dietcharts is an array of objects)
+  const specialInstructionsCount = dietcharts.filter(chart => chart.instructions && chart.instructions.length > 0).length;
 
   return (
     <motion.div
@@ -31,14 +51,11 @@ const FoodManagerDashboard = () => {
           >
             <Card className="shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
               <CardContent className="space-y-4">
-                <Typography
-                  variant="h5"
-                  className="font-semibold text-gray-800"
-                >
+                <Typography variant="h5" className="font-semibold text-gray-800">
                   Total Diet Plans
                 </Typography>
                 <Typography variant="h6" className="text-gray-500">
-                  120 active diet charts
+                  {dietcharts.length} active diet charts
                 </Typography>
               </CardContent>
             </Card>
@@ -52,14 +69,11 @@ const FoodManagerDashboard = () => {
           >
             <Card className="shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
               <CardContent className="space-y-4">
-                <Typography
-                  variant="h5"
-                  className="font-semibold text-gray-800"
-                >
+                <Typography variant="h5" className="font-semibold text-gray-800">
                   Pending Orders
                 </Typography>
                 <Typography variant="h6" className="text-gray-500">
-                  15 pending deliveries
+                  {mealDeliveries.length} pending deliveries
                 </Typography>
               </CardContent>
             </Card>
@@ -73,14 +87,11 @@ const FoodManagerDashboard = () => {
           >
             <Card className="shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
               <CardContent className="space-y-4">
-                <Typography
-                  variant="h5"
-                  className="font-semibold text-gray-800"
-                >
+                <Typography variant="h5" className="font-semibold text-gray-800">
                   Alerts
                 </Typography>
                 <Typography variant="h6" className="text-red-600">
-                  3 patients have special instructions today.
+                  {specialInstructionsCount} patients have special instructions today.
                 </Typography>
               </CardContent>
             </Card>
@@ -94,7 +105,7 @@ const FoodManagerDashboard = () => {
           >
             <div className="flex justify-center">
               <Button
-              onClick={() => navigate('/diet-charts')}
+                onClick={() => navigate("/diet-charts")}
                 variant="contained"
                 color="primary"
                 className="py-3 text-lg font-semibold hover:bg-red-700 transition-colors bg-gradient-to-r from-sky-600 to-orange-600"

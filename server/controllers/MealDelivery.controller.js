@@ -1,4 +1,5 @@
 import MealDelivery from "../models/Delivery.js";
+import Patient from "../models/Patient.js";
 
 // MealDelivery Management
 export const assignMealDelivery = async (req, res) => {
@@ -11,12 +12,12 @@ export const assignMealDelivery = async (req, res) => {
   }
 };
 
-export const getAllMealDelivery = async (res) => {
+export const getAllMealDelivery = async (req,res) => {
   try {
-    const patients = await Patient.find();
-    res.json(patients);
+    const deliveries = await MealDelivery.find();
+    res.json(deliveries);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message } );
   }
 };
 

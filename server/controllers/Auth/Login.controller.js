@@ -25,6 +25,7 @@ export const Login = async (req, res) => {
       role: user.role,
     };
 
+    console.log(process.env.JWT_SECRET)
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: '1d',
     }); // Generate JWT

@@ -3,41 +3,41 @@ import mongoose from "mongoose";
 const mealDeliverySchema = new mongoose.Schema({
   patientId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient", // Referencing Patient schema
+    ref: "Patient", 
     required: true,
   },
   foodManagerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "FoodManager", // Referencing Food Manager schema
+    ref: "FoodManager", 
     required: true,
   },
   pantryStaffId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "PantryStaff", // Referencing Pantry Staff schema
+    ref: "PantryStaff", 
     required: true,
   },
   deliveryPersonnelId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "DeliveryPersonnel", // Referencing Delivery Personnel schema
+    ref: "DeliveryPersonnel", 
     required: true,
   },
   mealType: {
     type: String,
-    enum: ["morning", "evening", "night"], // Meal types
+    enum: ["morning", "evening", "night"], 
     required: true,
   },
   ingredients: {
-    type: [String], // List of ingredients for the meal
+    type: [String], 
     required: true,
   },
   preparationStatus: {
     type: String,
-    enum: ["not started", "in progress", "completed"], // Status of meal preparation
+    enum: ["not started", "in progress", "completed"], 
     default: "not started",
   },
   deliveryStatus: {
     type: String,
-    enum: ["pending", "delivered"], // Delivery status
+    enum: ["pending", "delivered"], 
     default: "pending",
   },
   deliveryTime: {
@@ -45,11 +45,11 @@ const mealDeliverySchema = new mongoose.Schema({
   },
   deliveryNotes: {
     type: String,
-    default: "", // Optional notes for delivery
+    default: "", 
   },
   timestamp: {
     type: Date,
-    default: Date.now, // Timestamp for when the delivery was logged
+    default: Date.now, 
   },
 });
 
