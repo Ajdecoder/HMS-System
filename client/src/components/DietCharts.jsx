@@ -39,7 +39,6 @@ const DietCharts = () => {
       try {
         const res = await fetchPatients();
         setPatientsInPannl(res.data);
-        console.log(res)
       } catch (error) {
         console.error("Error fetching patients:", error);
       }
@@ -52,6 +51,7 @@ const DietCharts = () => {
       try {
         const res = await fetchDietCharts();
         setDietChartsData(res.data);
+        console.log(res)
       } catch (error) {
         console.error("Error fetching diet charts:", error);
       } finally {
@@ -254,7 +254,6 @@ const DietCharts = () => {
             >
               {patientInPannl.map((patient) => (
                 <option key={patient._id} value={patient._id}>
-                  {console.log(selectedPatient)}
                   {patient.name}
                 </option>
               ))}

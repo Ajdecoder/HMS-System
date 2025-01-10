@@ -46,6 +46,14 @@ export const updateDietChartById = async (id, data) =>
 export const deleteDietChartById = async (id) =>
   API.delete(`/api/v1/diet-charts/${id}`);
 
+// Fetch special instructions for diet charts
+export const fetchSpecialInstructions = async () => {
+  const response = await API.get("/api/v1/diet-charts");
+  const specialInstructions = response.data.filter(
+    (chart) => chart.instructions && chart.instructions.trim().length > 0
+  );
+  return specialInstructions;
+};
 // Pantry Staff
 export const fetchPantryStaff = async () => API.get("/api/v1/pantry");
 
@@ -81,14 +89,6 @@ export const fetchInProgressMeals = async () => {
 };
 
 
-// Fetch special instructions for diet charts
-export const fetchSpecialInstructions = async () => {
-  const response = await API.get("/api/v1/diet-charts");
-  const specialInstructions = response.data.filter(
-    (chart) => chart.instructions && chart.instructions.trim().length > 0
-  );
-  return specialInstructions;
-};
 
 
 

@@ -14,12 +14,9 @@ export const assignMealDelivery = async (req, res) => {
 
 export const getAllMealDelivery = async (req, res) => {
   try {
-    const deliveries = await MealDelivery.find().populate([
-      "PantryStaff",
-      "FoodManager",
-      "Patient",
-    ]);
-
+    const deliveries = await MealDelivery.find()
+      .populate("patientId") // Populate patientId field
+      // .populate("pantryStaffId"); // Populate pantryStaffId field
     res.json(deliveries);
   } catch (error) {
     res.status(500).json({ error: error.message });

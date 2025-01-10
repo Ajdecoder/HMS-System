@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 
 const dietChartSchema = new mongoose.Schema({
-  patientId: { type: String, ref: 'Patient',  required: true, },
+  patientId: { type: String, ref: "Patient", required: true },
   morning: {
-    meal: String,  
-    ingredients: [String],  
+    meal: String,
+    ingredients: [String],
   },
-
   evening: {
     meal: String,
     ingredients: [String],
@@ -15,9 +14,9 @@ const dietChartSchema = new mongoose.Schema({
     meal: String,
     ingredients: [String],
   },
-  instructions: String,  
+  instructions: String,
 });
 
-const DietChart = mongoose.model('DietChart', dietChartSchema);
+const DietChart = mongoose.model("DietChart", dietChartSchema);
 
 export default DietChart;

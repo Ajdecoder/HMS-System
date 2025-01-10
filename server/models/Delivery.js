@@ -2,37 +2,32 @@ import mongoose from "mongoose";
 
 const mealDeliverySchema = new mongoose.Schema({
   patientId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient", 
-    required: true,
-  },
-  foodManagerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "FoodManager", 
+    type: String,
+    ref: "Patient",
     required: true,
   },
   pantryStaffId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "PantryStaff", 
+    type: String,
+    ref: "PantryStaff",
     required: true,
   },
   mealType: {
     type: String,
-    enum: ["morning", "evening", "night"], 
+    enum: ["morning", "evening", "night"],
     required: true,
   },
   ingredients: {
-    type: [String], 
+    type: [String],
     required: true,
   },
   preparationStatus: {
     type: String,
-    enum: ["not started", "in progress", "completed"], 
+    enum: ["not started", "in progress", "completed"],
     default: "not started",
   },
   deliveryStatus: {
     type: String,
-    enum: ["pending", "delivered"], 
+    enum: ["pending", "delivered"],
     default: "pending",
   },
   deliveryTime: {
@@ -40,11 +35,11 @@ const mealDeliverySchema = new mongoose.Schema({
   },
   deliveryNotes: {
     type: String,
-    default: "", 
+    default: "",
   },
   timestamp: {
     type: Date,
-    default: Date.now, 
+    default: Date.now,
   },
 });
 
