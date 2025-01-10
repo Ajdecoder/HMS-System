@@ -137,7 +137,7 @@ const DietCharts = () => {
                   <div>
                     <Typography
                       variant="body1"
-                      className="font-medium text-gray-700"
+                      className="font-extrabold text-black "
                     >
                       Morning:
                     </Typography>
