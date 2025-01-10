@@ -9,7 +9,7 @@ The **Hospital Food Delivery Management System** is a web-based solution designe
 - **Inner Pantry Staff**: Responsible for preparing meals according to diet charts.
 - **Delivery Personnel**: Delivers meals to patients' rooms and tracks delivery statuses.
 
-## Features
+## Features 
 
 - **Patient Information Management**: Add, edit, and delete patient details, including disease, allergies, and room information.
 - **Diet Chart Management**: Assign specific diet plans to patients, including meal schedules and special dietary instructions.
