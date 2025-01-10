@@ -32,7 +32,7 @@ mongoose
   .catch((err) => console.error("Database connection error:", err));
 
 app.get("/", (req, res) => {
-  res.status(2001).send("Hospital Food Manager API");
+  res.status(201).send("Hospital Food Manager API");
 });
 
 app.post("/auth/register", Signup)
