@@ -9,9 +9,13 @@ import {
   Chip,
   IconButton,
 } from "@mui/material";
-import { createDietChart, fetchDietCharts } from "../services/api";
+import {
+  createDietChart,
+  fetchDietCharts,
+  fetchPatients,
+} from "../services/api";
 import { motion } from "framer-motion";
-import { Add, Remove } from "@mui/icons-material"; // For adding/removing ingredients
+import { Add, Remove } from "@mui/icons-material";
 import { useAuth } from "./context/AuthContext";
 
 const DietCharts = () => {
@@ -26,7 +30,22 @@ const DietCharts = () => {
   const [instructions, setInstructions] = useState("");
   const [loading, setLoading] = useState(true);
   const modalRef = useRef(null);
-  const {loggedInUser} = useAuth()
+  const [patientInPannl, setPatientsInPannl] = useState([]);
+  const { loggedInUser } = useAuth();
+  const [selectedPatient, setSelectedPatient] = useState("");
+
+  useEffect(() => { 
+    const getPatients = async () => {
+      try {
+        const res = await fetchPatients();
+        setPatientsInPannl(res.data);
+        console.log(res)
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    };
+    getPatients();
+  }, []);
 
   useEffect(() => {
     const getallDietCharts = async () => {
@@ -46,6 +65,7 @@ const DietCharts = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const dietChartData = {
+      patientId: selectedPatient,
       morning: { meal: morningMeal, ingredients: morningIngredients },
       evening: { meal: eveningMeal, ingredients: eveningIngredients },
       night: { meal: nightMeal, ingredients: nightIngredients },
@@ -79,7 +99,6 @@ const DietCharts = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Functions to handle adding/removing ingredients
   const handleAddIngredient = (mealType) => {
     const ingredient = prompt("Enter ingredient:");
     if (ingredient) {
@@ -95,14 +114,19 @@ const DietCharts = () => {
 
   const handleRemoveIngredient = (mealType, ingredient) => {
     if (mealType === "morning") {
-      setMorningIngredients(morningIngredients.filter((item) => item !== ingredient));
+      setMorningIngredients(
+        morningIngredients.filter((item) => item !== ingredient)
+      );
     } else if (mealType === "evening") {
-      setEveningIngredients(eveningIngredients.filter((item) => item !== ingredient));
+      setEveningIngredients(
+        eveningIngredients.filter((item) => item !== ingredient)
+      );
     } else if (mealType === "night") {
-      setNightIngredients(nightIngredients.filter((item) => item !== ingredient));
+      setNightIngredients(
+        nightIngredients.filter((item) => item !== ingredient)
+      );
     }
   };
-  {console.log(dietChartsData)}
 
   return (
     <div className="min-h-full bg-gray-950 py-10 px-6">
@@ -221,6 +245,20 @@ const DietCharts = () => {
             ref={modalRef}
             className="mt-7 z-50 max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg "
           >
+            <label>Select Patient:</label>
+            <select
+              id="patientSelect"
+              name="patientId"
+              onChange={(e) => setSelectedPatient(e.target.value)} // Store selected patient ID
+              value={selectedPatient}
+            >
+              {patientInPannl.map((patient) => (
+                <option key={patient._id} value={patient._id}>
+                  {console.log(selectedPatient)}
+                  {patient.name}
+                </option>
+              ))}
+            </select>
             <Typography variant="h4" className="text-center mb-4 text-sky-600">
               Add Diet Chart
             </Typography>
@@ -245,7 +283,9 @@ const DietCharts = () => {
                   <Chip
                     key={index}
                     label={ingredient}
-                    onDelete={() => handleRemoveIngredient("morning", ingredient)}
+                    onDelete={() =>
+                      handleRemoveIngredient("morning", ingredient)
+                    }
                     color="primary"
                     className="mr-2 mb-2"
                   />
@@ -275,7 +315,9 @@ const DietCharts = () => {
                   <Chip
                     key={index}
                     label={ingredient}
-                    onDelete={() => handleRemoveIngredient("evening", ingredient)}
+                    onDelete={() =>
+                      handleRemoveIngredient("evening", ingredient)
+                    }
                     color="primary"
                     className="mr-2 mb-2"
                   />
@@ -345,16 +387,18 @@ const DietCharts = () => {
       )}
 
       {/* Button to Open Modal */}
-      { loggedInUser.role === "food_manager" && <div className="fixed bottom-6 right-6">
-        <Button
-          onClick={() => setIsOpen(true)}
-          variant="contained"
-          color="secondary"
-          className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg text-white hover:bg-blue-700 transition duration-300"
-        >
-          +
-        </Button>
-      </div>}
+      {loggedInUser.role === "food_manager" && (
+        <div className="fixed bottom-6 right-6">
+          <Button
+            onClick={() => setIsOpen(true)}
+            variant="contained"
+            color="secondary"
+            className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg text-white hover:bg-blue-700 transition duration-300 animate-bounce"
+          >
+            +
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

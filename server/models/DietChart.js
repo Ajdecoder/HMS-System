@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
 const dietChartSchema = new mongoose.Schema({
-  patientId: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' },
+  patientId: { type: String, ref: 'Patient',  required: true, },
   morning: {
     meal: String,  
     ingredients: [String],  
   },
+
   evening: {
     meal: String,
     ingredients: [String],

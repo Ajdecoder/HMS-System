@@ -9,7 +9,7 @@ export const createDietChart = async (req, res) => {
     res.status(201).json(newDietChart);
   } catch (error) {
     res.status(500).json({ error: error.message });
-  }
+  } 
 };
 
 export const getDietChartByPatientId = async (req, res) => {
