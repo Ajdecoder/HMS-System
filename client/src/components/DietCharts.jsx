@@ -12,6 +12,7 @@ import {
 import { createDietChart, fetchDietCharts } from "../services/api";
 import { motion } from "framer-motion";
 import { Add, Remove } from "@mui/icons-material"; // For adding/removing ingredients
+import { useAuth } from "./context/AuthContext";
 
 const DietCharts = () => {
   const [dietChartsData, setDietChartsData] = useState([]);
@@ -25,6 +26,7 @@ const DietCharts = () => {
   const [instructions, setInstructions] = useState("");
   const [loading, setLoading] = useState(true);
   const modalRef = useRef(null);
+  const {loggedInUser} = useAuth()
 
   useEffect(() => {
     const getallDietCharts = async () => {
@@ -343,7 +345,7 @@ const DietCharts = () => {
       )}
 
       {/* Button to Open Modal */}
-      <div className="fixed bottom-6 right-6">
+      { loggedInUser.role === "food_manager" && <div className="fixed bottom-6 right-6">
         <Button
           onClick={() => setIsOpen(true)}
           variant="contained"
@@ -352,7 +354,7 @@ const DietCharts = () => {
         >
           +
         </Button>
-      </div>
+      </div>}
     </div>
   );
 };
