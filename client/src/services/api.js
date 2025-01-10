@@ -56,6 +56,38 @@ export const updatePantryStaffById = async (id, data) =>
 export const deletePantryStaffById = async (id) =>
   API.delete(`/api/v1/pantry/${id}`);
 
+// Fetch pending preparations
+export const fetchPendingPreparations = async () => {
+  const response = await API.get("/api/v1/meal-deliveries"); // Assuming this API returns the provided data structure
+  const pendingPreparations = response.data.filter(
+    (meal) =>
+      meal.preparationStatus !== "completed" && meal.deliveryStatus !== "delivered"
+  );
+  return pendingPreparations; // Returns array of pending meal preparations
+};
+
+// Fetch Inprogress meal
+
+export const fetchInProgressMeals = async () => {
+  const response = await API.get("/api/v1/meal-deliveries");
+  const inProgressMeals = response.data.filter(
+    (meal) => meal.preparationStatus === "in progress"
+  );
+  return inProgressMeals;
+};
+
+
+// Fetch special instructions for diet charts
+export const fetchSpecialInstructions = async () => {
+  const response = await API.get("/api/v1/diet-charts");
+  const specialInstructions = response.data.filter(
+    (chart) => chart.instructions && chart.instructions.trim().length > 0
+  );
+  return specialInstructions;
+};
+
+
+
 // Meal Deliveries
 export const fetchMealDeliveries = async () => API.get("/api/v1/meal-deliveries");
 
