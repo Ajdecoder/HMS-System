@@ -25,9 +25,7 @@ const Signup = () => {
 
       if (response.status === 200) {
         toast.success("Signup successful");
-        console.log(response);
         localStorage.setItem("Hfmtoken", response.data.token);
-        toast.success("Login successful!");
         const user = jwtDecode(token);
         setLoggedInUser(user);
         navigate("/dashboard");
@@ -43,17 +41,19 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex items-center mt-6">
+    <div className="flex flex-col xl:flex-row items-center mt-6 p-4">
       <img
         src="https://www.alphaebm.com/images/Hros/Alpha-HROS.jpg"
         alt="Hospital food delivery system logo"
-        className="mb-4 max-w-3xl h-screen rounded-lg ml-3"
+        className="mb-4 max-w-full xl:max-w-3xl xl:h-screen rounded-lg w-full xl:w-1/2 object-cover"
       />
-      <div className="ml-11">
-        <h1 className=" text-center text-2xl">Signup</h1>
+      <div className="ml-0 xl:ml-11 w-full xl:w-1/2">
+        <h1 className="text-center text-2xl xl:text-3xl font-semibold mb-4">
+          Signup
+        </h1>
 
         <form
-          className="flex flex-col max-w-2xl w-full items-center"
+          className="flex flex-col items-center max-w-lg mx-auto w-full"
           onSubmit={handleSignup}
         >
           <TextField
@@ -61,7 +61,7 @@ const Signup = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             margin="normal"
-            className="w-96"
+            className="w-full xl:w-96"
             required
           />
           <TextField
@@ -70,7 +70,7 @@ const Signup = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             margin="normal"
-            className="w-96"
+            className="w-full xl:w-96"
             required
           />
           <TextField
@@ -79,7 +79,7 @@ const Signup = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             margin="normal"
-            className="w-96"
+            className="w-full xl:w-96"
             autoComplete="off"
             required
           />
@@ -89,7 +89,7 @@ const Signup = () => {
             value={role}
             onChange={(e) => setRole(e.target.value)}
             margin="normal"
-            className="w-96"
+            className="w-full xl:w-96"
             SelectProps={{ native: true }}
             required
           >
@@ -99,7 +99,7 @@ const Signup = () => {
           </TextField>
 
           {error && (
-            <Typography color="error" className="mt-2">
+            <Typography color="error" className="mt-2 text-center">
               {error}
             </Typography>
           )}
@@ -108,13 +108,13 @@ const Signup = () => {
             type="submit"
             variant="contained"
             color="primary"
-            className="w-96 mt-4"
+            className="w-full xl:w-96 mt-4"
           >
             Signup
           </Button>
         </form>
 
-        <Typography className="mt-4">
+        <Typography className="mt-4 text-center">
           Already have an account?{" "}
           <Link to="/auth/login" className="text-blue-500 hover:underline">
             Login here
@@ -122,7 +122,7 @@ const Signup = () => {
         </Typography>
       </div>
 
-      <ToastContainer autoClose="1000" />
+      <ToastContainer autoClose={1000} />
     </div>
   );
 };
