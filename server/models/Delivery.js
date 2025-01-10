@@ -16,11 +16,6 @@ const mealDeliverySchema = new mongoose.Schema({
     ref: "PantryStaff", 
     required: true,
   },
-  deliveryPersonnelId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "DeliveryPersonnel", 
-    required: true,
-  },
   mealType: {
     type: String,
     enum: ["morning", "evening", "night"], 

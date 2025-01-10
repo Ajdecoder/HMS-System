@@ -72,12 +72,12 @@ const Navbar = () => {
             </Link>
           </motion.li>
         )}
-        {loggedInUser?.role === "delivery_personnel" && (
+        {loggedInUser?.role !== "pantry_staff" && (
           <motion.li
             whileHover={{ scale: 1.1 }}
             className="text-white hover:text-blue-300 transition duration-300"
           >
-            <Link to="/meal-deliveries" className="transition duration-300">
+            <Link to="/track-deliveries" className="transition duration-300">
               Track Deliveries
             </Link>
           </motion.li>
@@ -93,7 +93,7 @@ const Navbar = () => {
           {loggedInUser ? (
             <button className="text-white font-bold">{loggedInUser?.name}</button>
           ) : (
-            <button onClick={() => navigate('/auth/login')}>Login</button>
+            <button onClick={() => navigate("/auth/login")}>Login</button>
           )}
 
           {loggedInUser && (
@@ -117,7 +117,7 @@ const Navbar = () => {
 
         {isProfileModalOpen && loggedInUser && (
           <motion.div
-            className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-58 z-10"
+            className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-[18rem] p-4 z-10"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -131,7 +131,7 @@ const Navbar = () => {
               Department : {loggedInUser?.role}
             </div>
             <hr className="border-t-1 border-gray-200" />
-            <ul className="py-2">
+            <ul className="p-4">
               <motion.li
                 whileHover={{ scale: 1.05 }}
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"

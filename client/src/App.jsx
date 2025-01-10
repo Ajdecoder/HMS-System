@@ -9,6 +9,8 @@ import Signup from "./components/Auth/Register";
 import { Dashboard } from "./components/DashBoard";
 import Home from "./components/Home";
 import { Navigate } from "react-router-dom";
+import TrackDeliveries from './components/TrackDeliveries'
+import {MealDeliveries} from './components/MealDelivery'
 
 const App = () => {
   const { loggedInUser } = useAuth(); 
@@ -43,6 +45,14 @@ const App = () => {
         <Route
           path="/diet-charts"
           element={loggedInUser ? <DietCharts /> : <Navigate to="/auth/login" />}
+        />  
+        <Route
+          path="/meal-deliveries"
+          element={loggedInUser ? <MealDeliveries /> : <Navigate to="/auth/login" />}
+        />
+        <Route
+          path="/track-deliveries"
+          element={loggedInUser ? <TrackDeliveries /> : <Navigate to="/auth/login" />}
         />
       </Routes>
     </Router>
