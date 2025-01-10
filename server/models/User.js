@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ['food_manager', 'pantry_staff', 'delivery_personnel'],
-    default: 'pantry_staff' // Default role is pantry staff for now. This can be updated as per the requirement.
+      enum: ['food_manager', 'pantry_staff', 'delivery_personnel'],
+      default: 'pantry_staff' // Default role is pantry staff for now
   },
   createdAt: { type: Date, default: Date.now },
 });

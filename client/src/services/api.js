@@ -14,6 +14,8 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+
+
 // Patients
 export const fetchPatients = async () => API.get("/api/v1/patients");
 
@@ -26,6 +28,8 @@ export const updatePatientById = async (id, data) =>
 
 export const deletePatientById = async (id) =>
   API.delete(`/api/v1/patients/${id}`);
+
+
 
 // Diet Charts
 export const fetchDietCharts = async () => API.get("/api/v1/diet-charts");
@@ -105,3 +109,6 @@ export const loginUser = async (data) => API.post("/auth/login", data);
 
 export const registerUser = async (data) =>
   API.post("/auth/register", data);
+
+
+

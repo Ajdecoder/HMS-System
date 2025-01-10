@@ -100,6 +100,7 @@ const DietCharts = () => {
       setNightIngredients(nightIngredients.filter((item) => item !== ingredient));
     }
   };
+  {console.log(dietChartsData)}
 
   return (
     <div className="min-h-full bg-gray-950 py-10 px-6">
